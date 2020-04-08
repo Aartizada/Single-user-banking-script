@@ -156,7 +156,7 @@ def transactionLogs(floatCurrent, transactionOccurred, floatAddedAmount,newAmoun
     updatedAmount = newAmount
     updatedAmount = str(newAmount)
 
-    LOG.write("\n\nOn " + (time.strftime("%d/%M/%Y"))+": ")
+    LOG.write("\n\nOn " + (time.strftime("%a, %d %b %Y"))+": ")
     LOG.write("\nYour balance was: " + oldAmount)
     LOG.write("\nThe transaction that Occurred was: " + transactionType + transactionAmount)
     LOG.write("\nYour new Balance is: " + updatedAmount)
