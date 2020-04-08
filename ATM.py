@@ -3,32 +3,44 @@ import math
 import sys
 import time
 
-print("This is an ATM to manage your cash.")
+print("\n\n---------- This is an ATM to manage your cash. ----------")
 print()
-print("----- Instructions -----")
-print()
-print("you can exit after any transaction by typing QUIT.\n")
-print("clear -> resets all data.")
-print()
+print("*--------------------- Instructions ---------------------*")
+print("*                                                        *")
+print("*   You may exit this app at any time by typing Exit     *")
+print("* You may wipe all the data on this app by typing Clear  *")
+print("*                                                        *")
+print("*--------------------------------------------------------*")
 
 def addStartingBalance():
-    print("Shall I add a starting balance?")
+    print("\n\nShall I add a starting balance to your new account?")
     addStart = str(input())
     addStart = addStart.lower()
+    if addStart == "n" or addStart == "no":
+        file = open("Bank Data.txt", "w")
+        integer = 0
+        file.write(str(integer))
     if addStart == "y" or addStart == "yes":
         file = open("Bank Data.txt", "w")
         print("How much money would you like to put in your new account?")
         file.write(str(input()))
-    print("Should I reset the old log files?")
+    print("\n\nShould I reset the old log files?")
     erase = str(input())
     erase = erase.lower()
     if erase == "y" or erase == "yes":
         file = open("Transaction Log.txt", "w")
         file.write("START")
+    if erase == "n" or erase == "no":
+        file = open("Transaction Log.txt", "a+")
+        file.write("\n\n\n--------------------------------")
+        file.write("\n------- cleared account --------")
+        file.write("\n--------------------------------")
+        file.write("\nSTART")
+        file.close()
     prompt()
 
 def prompt():
-    print("Would you like to make a transaction?")
+    print("\nWould you like to make a transaction?")
     transact = str(input())
     transact = transact.lower()
     startup(transact)
@@ -81,7 +93,6 @@ def depositAction():
         current = open("Bank Data.txt", "r").read()
         floatCurrent = float(current)
         file.close()
-
         print("\n\nHow much cash would you like to deposit?")
         addedAmount = input()
         floatAddedAmount = float(addedAmount)
@@ -123,7 +134,8 @@ def withdrawalAction():
         file.write(newAmount)
         file.close()
         file = open("Bank Data.txt", "r")
-        print("\n\nNew balance is: ")
+        cls()
+        print("New balance is: ")
         print(file.read())
         file.close()
         transactionOccurred = "-"
