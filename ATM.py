@@ -1,3 +1,4 @@
+import os
 import math
 import sys
 import time
@@ -51,19 +52,21 @@ def transaction_option():
     change = str(input(""))
     change = change.lower()
     if change == "deposit" or change == "d":
+        cls()
         deposit_money()
     elif change == "withdrawal" or change == "w":
+        cls()
         withdrawMoney()
     elif change == "quit" or change == "exit":
         print("Exiting...")
+        cls()
         sys.exit()
     else:
         print("Invalid input")
 
 def checkBalance():
     file = open("Bank Data.txt", "r")
-    print("Current balance")
-    print(file.read())
+    print("Your current balance is: " +(file.read()))
     current = open("Bank Data.txt", "r").read()
     floatCurrent = float(current)
     file.close()
@@ -79,7 +82,7 @@ def depositAction():
         floatCurrent = float(current)
         file.close()
 
-        print("How much cash would you like to deposit?")
+        print("\n\nHow much cash would you like to deposit?")
         addedAmount = input()
         floatAddedAmount = float(addedAmount)
         file = open("Bank Data.txt", "w")
@@ -88,11 +91,14 @@ def depositAction():
         file.write(newAmount)
         file.close()
         file = open("Bank Data.txt", "r")
+        cls()
         print("New Amount is: ")
         print(file.read())
+        print()
+        print()
         file.close()
-        transactionOccured = "+"
-        transactionLogs(floatCurrent, transactionOccured, floatAddedAmount, newAmount)
+        transactionOccurred = "+"
+        transactionLogs(floatCurrent, transactionOccurred, floatAddedAmount, newAmount)
     except ValueError:
         print("You provided an invalid input.")
 
@@ -108,7 +114,7 @@ def withdrawalAction():
         floatCurrent = float(current)
         file.close()
 
-        print("How much cash would you like to withdraw?")
+        print("\n\nHow much cash would you like to withdraw?")
         addedAmount = input()
         floatAddedAmount = float(addedAmount)
         file = open("Bank Data.txt", "w")
@@ -117,21 +123,22 @@ def withdrawalAction():
         file.write(newAmount)
         file.close()
         file = open("Bank Data.txt", "r")
-        print("New Amount is: ")
+        print("\n\nNew balance is: ")
         print(file.read())
         file.close()
-        transactionOccured = "-"
-        transactionLogs(floatCurrent, transactionOccured, floatAddedAmount, newAmount)
+        transactionOccurred = "-"
+        transactionLogs(floatCurrent, transactionOccurred, floatAddedAmount, newAmount)
     except ValueError:
         print("You provided an invalid input.")
 
+def cls():
+    os.system('cls' if os.name=='nt' else 'clear')
 
-
-def transactionLogs(floatCurrent, transactionOccured, floatAddedAmount,newAmount):
+def transactionLogs(floatCurrent, transactionOccurred, floatAddedAmount,newAmount):
     LOG = open("Transaction Log.txt", "a")
     oldAmount = floatCurrent
     oldAmount = str(floatCurrent)
-    transactionType = transactionOccured
+    transactionType = transactionOccurred
     transactionAmount = floatAddedAmount
     transactionAmount = str(transactionAmount)
     updatedAmount = newAmount
@@ -139,7 +146,7 @@ def transactionLogs(floatCurrent, transactionOccured, floatAddedAmount,newAmount
 
     LOG.write("\n\nOn " + (time.strftime("%d/%M/%Y"))+": ")
     LOG.write("\nYour balance was: " + oldAmount)
-    LOG.write("\nThe transaction that occured was: " + transactionType + transactionAmount)
+    LOG.write("\nThe transaction that Occurred was: " + transactionType + transactionAmount)
     LOG.write("\nYour new Balance is: " + updatedAmount)
 
 
