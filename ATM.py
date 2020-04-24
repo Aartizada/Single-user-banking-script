@@ -3,7 +3,7 @@ import math
 import sys
 import time
 
-print("\n\n---------- This is an ATM to manage your cash. ----------")
+print("\n\n---------- This is an ATM to pretend you have money. ----------")
 print()
 print("*--------------------- Instructions ---------------------*")
 print("*                                                        *")
@@ -11,6 +11,21 @@ print("*   You may exit this app at any time by typing Exit     *")
 print("* You may wipe all the data on this app by typing Clear  *")
 print("*                                                        *")
 print("*--------------------------------------------------------*")
+
+def transactionLogs(floatCurrent, transactionOccurred, floatAddedAmount,newAmount):
+    LOG = open("Transaction Log.txt", "a")
+    oldAmount = floatCurrent
+    oldAmount = str(floatCurrent)
+    transactionType = transactionOccurred
+    transactionAmount = floatAddedAmount
+    transactionAmount = str(transactionAmount)
+    updatedAmount = newAmount
+    updatedAmount = str(newAmount)
+
+    LOG.write("\n\nOn " + (time.strftime("%a, %d %b %Y"))+": ")
+    LOG.write("\nYour balance was: " + oldAmount)
+    LOG.write("\nThe transaction that Occurred was: " + transactionType + transactionAmount)
+    LOG.write("\nYour new Balance is: " + updatedAmount)
 
 def addStartingBalance():
     print("\n\nShall I add a starting balance to your new account?")
@@ -38,6 +53,64 @@ def addStartingBalance():
         file.write("\nSTART")
         file.close()
     prompt()
+
+def checkBalance():
+    file = open("Bank Data.txt", "r")
+    print("Your current balance is: " +(file.read()))
+    current = open("Bank Data.txt", "r").read()
+    floatCurrent = float(current)
+    file.close()
+
+def depositAction():
+    try:
+        file = open("Bank Data.txt", "r")
+        current = open("Bank Data.txt", "r").read()
+        floatCurrent = float(current)
+        file.close()
+        print("\n\nHow much cash would you like to deposit?")
+        addedAmount = input()
+        floatAddedAmount = float(addedAmount)
+        file = open("Bank Data.txt", "w")
+        newAmount = floatCurrent + floatAddedAmount
+        newAmount = str(newAmount)
+        file.write(newAmount)
+        file.close()
+        file = open("Bank Data.txt", "r")
+        cls()
+        print("New Amount is: ")
+        print(file.read())
+        print()
+        print()
+        file.close()
+        transactionOccurred = "+"
+        transactionLogs(floatCurrent, transactionOccurred, floatAddedAmount, newAmount)
+    except ValueError:
+        print("You provided an invalid input.")
+
+def withdrawalAction():
+    try:
+        file = open("Bank Data.txt", "r")
+        current = open("Bank Data.txt", "r").read()
+        floatCurrent = float(current)
+        file.close()
+
+        print("\n\nHow much cash would you like to withdraw?")
+        addedAmount = input()
+        floatAddedAmount = float(addedAmount)
+        file = open("Bank Data.txt", "w")
+        newAmount = floatCurrent - floatAddedAmount
+        newAmount = str(newAmount)
+        file.write(newAmount)
+        file.close()
+        file = open("Bank Data.txt", "r")
+        cls()
+        print("New balance is: ")
+        print(file.read())
+        file.close()
+        transactionOccurred = "-"
+        transactionLogs(floatCurrent, transactionOccurred, floatAddedAmount, newAmount)
+    except ValueError:
+        print("You provided an invalid input.")
 
 def prompt():
     print("\nWould you like to make a transaction?")
@@ -76,91 +149,16 @@ def transaction_option():
     else:
         print("Invalid input")
 
-def checkBalance():
-    file = open("Bank Data.txt", "r")
-    print("Your current balance is: " +(file.read()))
-    current = open("Bank Data.txt", "r").read()
-    floatCurrent = float(current)
-    file.close()
-
 def deposit_money():
     checkBalance()
     depositAction()
-
-def depositAction():
-    try:
-        file = open("Bank Data.txt", "r")
-        current = open("Bank Data.txt", "r").read()
-        floatCurrent = float(current)
-        file.close()
-        print("\n\nHow much cash would you like to deposit?")
-        addedAmount = input()
-        floatAddedAmount = float(addedAmount)
-        file = open("Bank Data.txt", "w")
-        newAmount = floatCurrent + floatAddedAmount
-        newAmount = str(newAmount)
-        file.write(newAmount)
-        file.close()
-        file = open("Bank Data.txt", "r")
-        cls()
-        print("New Amount is: ")
-        print(file.read())
-        print()
-        print()
-        file.close()
-        transactionOccurred = "+"
-        transactionLogs(floatCurrent, transactionOccurred, floatAddedAmount, newAmount)
-    except ValueError:
-        print("You provided an invalid input.")
-
 
 def withdrawMoney():
     checkBalance()
     withdrawalAction()
 
-def withdrawalAction():
-    try:
-        file = open("Bank Data.txt", "r")
-        current = open("Bank Data.txt", "r").read()
-        floatCurrent = float(current)
-        file.close()
-
-        print("\n\nHow much cash would you like to withdraw?")
-        addedAmount = input()
-        floatAddedAmount = float(addedAmount)
-        file = open("Bank Data.txt", "w")
-        newAmount = floatCurrent - floatAddedAmount
-        newAmount = str(newAmount)
-        file.write(newAmount)
-        file.close()
-        file = open("Bank Data.txt", "r")
-        cls()
-        print("New balance is: ")
-        print(file.read())
-        file.close()
-        transactionOccurred = "-"
-        transactionLogs(floatCurrent, transactionOccurred, floatAddedAmount, newAmount)
-    except ValueError:
-        print("You provided an invalid input.")
-
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
-
-def transactionLogs(floatCurrent, transactionOccurred, floatAddedAmount,newAmount):
-    LOG = open("Transaction Log.txt", "a")
-    oldAmount = floatCurrent
-    oldAmount = str(floatCurrent)
-    transactionType = transactionOccurred
-    transactionAmount = floatAddedAmount
-    transactionAmount = str(transactionAmount)
-    updatedAmount = newAmount
-    updatedAmount = str(newAmount)
-
-    LOG.write("\n\nOn " + (time.strftime("%a, %d %b %Y"))+": ")
-    LOG.write("\nYour balance was: " + oldAmount)
-    LOG.write("\nThe transaction that Occurred was: " + transactionType + transactionAmount)
-    LOG.write("\nYour new Balance is: " + updatedAmount)
-
 
 def main():
     prompt()
